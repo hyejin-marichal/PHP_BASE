@@ -10,7 +10,9 @@ function RecuDonne($donne,$save )
 return $save;
 }
 
-RecuDonne($_POST,$_SESSION);
+$formulaire=RecuDonne($_POST,$_SESSION);
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,9 +26,22 @@ RecuDonne($_POST,$_SESSION);
 
 <body>
 <p>
+
+
 <?php
+
+$filters = array (
+    'name' => array('filter' => FILTER_VALIDATE_REGEXP, 'options' => array('regexp' => '#[\d[\^$.|?*+(){}]#')),
+    'firstname' => array('filter' => FILTER_VALIDATE_REGEXP, 'options' => array('regexp' => "#[a-zA-Z\'éàèêçùôâîû]#")),
+    'email' => FILTER_VALIDATE_EMAIL,
+    'message' => array('filter' => FILTER_VALIDATE_REGEXP, 'options' => array('regexp' => "#[\w,;./\:*€'()]{5,600}#")));
+
+$myinputs = filter_input_array(INPUT_POST, $filters);
+
+
 var_dump($_POST);
-if(preg_match('#[\w,;:!.?]{5,}#',$_POST['message'])) {
+var_dump($myinputs);
+/*if(!$myinputs['name'] OR !$myinputs['']OR OR RO])) {
     echo htmlspecialchars( $_POST['message']);
 }
 else {
@@ -34,18 +49,10 @@ else {
     echo "<div class='text-center'>
     <button type='submit' class='btn btn-light btn btn-outline-dark'> <a href='index.php?page=contact'>Revenir</a></button>
 </div>";
-}
+}*/
 ?>
 </p>
-<?php
-if (isset($_POST["email"])) {
-    if (!filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL) === false) {
-        echo("Email is valid");
-    } else {
-        echo("Email is not valid");
-    }
-}
-?>
+
 <p>
     <?php
     if(isset($_POST['gridRadios'])){
@@ -68,8 +75,7 @@ else {
 </p>
 
 <?php
-$formulaire = $_POST['name']. "\n".$_POST['firstname']. "\n".$_POST['email']. "\n".$_POST['message']. "\n".$_POST['gridRadios']. "\n".$_POST['civilite'];
-file_put_contents('contact.txt', $formulaire,FILE_APPEND);
+file_put_contents('contact.txt',$formulaire ,FILE_APPEND);
 echo "done";
 ?>
 

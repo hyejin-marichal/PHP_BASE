@@ -40,7 +40,7 @@ var_dump($_POST);?>
 
                         <input type="text" name="name" id="name" placeholder="Entrez votre nom" value="<?php
                         if(isset($_SESSION['nom'])) {
-                            echo $_SESSION['nom'] ;} ?>" class="form-control" required>
+                            echo $_SESSION['nom'] ;} ?>" class="form-control" >
                     </div>
                 </div>
                     <div class="form-group">
